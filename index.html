@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Conectar à Dalva</title>
+<style>
+  :root { --fundo: #f6f4ef; --texto: #1f2a24; --verde: #1f7a4d; --suave: #5d6b63; --cartao: #ffffff; }
+  @media (prefers-color-scheme: dark) { :root { --fundo: #111614; --texto: #e8efe9; --verde: #3fb47a; --suave: #9fb0a6; --cartao: #1a211e; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 16px; background: var(--fundo); color: var(--texto); font: 17px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { width: 100%; max-width: 420px; background: var(--cartao); border-radius: 20px; padding: 28px 22px; box-shadow: 0 6px 30px rgba(0,0,0,.08); text-align: center; }
+  h1 { font-size: 1.35rem; margin: 0 0 10px; }
+  p { margin: 0 0 18px; color: var(--suave); }
+  a.botao { display: block; background: var(--verde); color: #fff; text-decoration: none; font-weight: 600; padding: 15px 18px; border-radius: 14px; font-size: 1.05rem; }
+  .erro { color: #b3261e; }
+  small { display: block; margin-top: 16px; color: var(--suave); font-size: .82rem; }
+</style>
+</head>
+<body>
+<main id="conteudo">
+  <h1>Conectar à Dalva 💛</h1>
+  <p>Carregando…</p>
+</main>
+<script>
+  // A Dalva só recebe o código de volta pelo WhatsApp. O código sozinho não dá acesso a nada: só vale junto da
+  // chave que fica no computador da Dalva, e vence em poucos minutos. Esta página não guarda nada.
+  var NUMERO_DA_DALVA = '5511932948095';
+  var p = new URLSearchParams(location.search);
+  var codigo = p.get('code'), estado = p.get('state'), erro = p.get('error');
+  var el = document.getElementById('conteudo');
+  if (codigo && estado) {
+    var texto = 'Conectar Google: ' + estado + '.' + codigo;
+    var link = 'https://wa.me/' + NUMERO_DA_DALVA + '?text=' + encodeURIComponent(texto);
+    el.innerHTML = '<h1>Quase pronto 💛</h1><p>Toque no botão para mandar a confirmação para a Dalva no WhatsApp. É só enviar a mensagem que vai aparecer.</p><a class="botao" href="' + link + '">Enviar para a Dalva</a><small>Esta página não guarda nenhum dado.</small>';
+  } else if (erro) {
+    el.innerHTML = '<h1>Não deu certo desta vez</h1><p class="erro">A autorização não foi concluída. Peça um novo link para a Dalva quando quiser.</p>';
+  } else {
+    el.innerHTML = '<h1>Conectar à Dalva 💛</h1><p>Esta página só funciona pelo link que a Dalva manda no WhatsApp.</p>';
+  }
+</script>
+</body>
+</html>
